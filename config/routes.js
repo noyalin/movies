@@ -1,6 +1,7 @@
 var Index=require('../app/controllers/index');
 var User=require('../app/controllers/user');
 var Movie=require('../app/controllers/movie');
+var Comment=require('../app/controllers/comment');
 
 module.exports=function (app) {
     //预处理 pre handle user
@@ -30,5 +31,8 @@ module.exports=function (app) {
     app.post('/admin/movie/save',User.signinRequired,User.adminRequired,Movie.save);
     app.get('/admin/movie/list',User.signinRequired,User.adminRequired, Movie.list);
     app.delete('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.del);
+
+    //Comment
+    app.post('/user/comment',User.signinRequired,Comment.save);
 };
 
