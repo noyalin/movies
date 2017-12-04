@@ -47,7 +47,6 @@ exports.signup = function (req, res) {
 
 //signin
 exports.signin = function (req, res) {
-
     var _user = req.body.user;
     var name = _user.name;
     var password = _user.password;

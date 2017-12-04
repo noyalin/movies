@@ -65,9 +65,9 @@ app.use(session({
         url:dburl,
         collection:'sessions'
     }),
-    resave: true,
-    saveUninitialized: false,
-    cookie: { secure: true }
+    // resave: true,
+    // saveUninitialized: false,
+    // cookie: { secure: true }
 }));
 
 //开发环境下：控制台打印log

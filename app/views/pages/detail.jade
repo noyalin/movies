@@ -1,9 +1,9 @@
 extends ../layout
 
 block content
-    .container
+    .container(style="margin-bottom: 50px;")
         .row
-            .col-md-7
+            .col-md-8
                 embed(src="#{movie.flash}", allowFullScreen="true", quality="high", width="720", height="600", align="middle", type="application/x-shockwave-flash")
                 .panel.panel-default
                     .panel-heading
@@ -13,22 +13,38 @@ block content
                             each item in comments
                                 li.media
                                     .pull-left
-                                        img.media-object(src="",style="width:64px;height:64px;")
+                                        a.comment(href="#comments",data-cid="#{item._id}",data-tid="#{item.from._id}")
+                                            img.media-object(src="",style="width:64px;height:64px;")
                                     .media-body
                                         h5.media-heading #{item.from.name}
                                         p #{item.content}
-                                        //.media
-                                        //    .pull-left
-                                        //        img.media-object(src="",style="width:64px;height:64px;")
-                            hr
-                        form(method="POST",action="/user/comment")
-                            input(type="hidden",name="comment[movie]",value="#{movie._id}")
-                            input(type="hidden",name="comment[from]",value="#{user._id}")
-                            .form-group
-                                textarea.form-control(name="comment[content]",row="3")
-                            button.btn.btn-primary(type="submit") 提交
+                                        if item.reply && item.reply.length > 0
+                                            each reply in item.reply
+                                                .media
+                                                    .pull-left
+                                                        a.comment(href="#comments",data-cid="#{item._id}",data-tid="#{reply.from._id}")
+                                                            img.media-object(src="",style="width:64px;height:64px;")
+                                                    .media-body
+                                                        h5.media-heading
+                                                          | #{reply.from.name}
+                                                          span.text-info &nbsp;回复 &nbsp;
+                                                          | #{reply.to.name} :
+                                                        p #{reply.content}
 
-            .col-md-5
+                            hr
+                        #comments
+                            form#commentForm(method="POST",action="/user/comment")
+                                input(type="hidden",name="comment[movie]",value="#{movie._id}")
+
+                                if user
+                                    input(type="hidden",name="comment[from]",value="#{user._id}")
+                                    .form-group
+                                        textarea.form-control(name="comment[content]",row="3")
+                                     button.btn.btn-primary(type="submit") 提交
+                                else
+                                    a.navbar-link(href="#",data-toggle="modal",data-target="#signinModal") 登陆后评论
+
+            .col-md-4
                 dl.dl-horizontal
                     dt 电影名
                     dd= movie.title
@@ -42,3 +58,4 @@ block content
                     dd= movie.year
                     dt 简介
                     dd= movie.summary
+    script(src="/js/detail.js")

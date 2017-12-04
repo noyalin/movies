@@ -1,4 +1,5 @@
 var Movie = require('../models/movie');
+var Category = require('../models/category');
 var Comment = require('../models/comment');
 var _ = require('underscore');
 
@@ -9,6 +10,7 @@ exports.detail = function (req, res) {
         Comment
             .find({movie: id})
             .populate('from', 'name')//根据from查user表里的name返回给name
+            .populate('reply.from reply.to', 'name')
             .exec(function (err, comments) {
                 console.log(comments);
                 res.render('detail', {
@@ -22,29 +24,27 @@ exports.detail = function (req, res) {
 
 //admin page
 exports.new = function (req, res) {
-    res.render('admin', {
-        title: 'movies 后台录入页',
-        movie: {
-            title: '',
-            director: '',
-            country: '',
-            year: '',
-            poster: '',
-            flash: '',
-            summary: '',
-            language: ''
-        }
+    Category.find({}, function (err, categories) {
+        res.render('admin', {
+            title: 'movie 后台录入页',
+            categories: categories,
+            movie: {}
+        });
     })
 };
+
 
 //admin update movie
 exports.update = function (req, res) {
     var id = req.params.id;
     if (id) {
         Movie.findById(id, function (err, movie) {
-            res.render('admin', {
-                title: 'movies 后台更新页',
-                movie: movie
+            Category.find(id, function (err, categories) {
+                res.render('admin', {
+                    title: 'movies 后台更新页',
+                    movie: movie,
+                    categories:categories
+                })
             })
         })
     }
@@ -55,7 +55,7 @@ exports.save = function (req, res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
     var _movie;
-    if (id !== "undefined") {
+    if (id) {
         Movie.findById(id, function (err, movie) {
             if (err) {
                 console.log(err);
@@ -73,21 +73,23 @@ exports.save = function (req, res) {
             })
         })
     } else {
-        _movie = new Movie({
-            director: movieObj.director,
-            title: movieObj.title,
-            country: movieObj.country,
-            language: movieObj.language,
-            year: movieObj.year,
-            poster: movieObj.poster,
-            summary: movieObj.summary,
-            flash: movieObj.flash
-        });
+        //插入新的数据
+        _movie = new Movie(movieObj);
+        var category = _movie.category;
 
         _movie.save(function (err, movie) {
             if (err) {
                 console.log(err);
             }
+
+            Category.findById(category, function (err, category) {
+                category.movies.push(movie._id);
+                category.save(function (err, category) {
+                    if (err) {
+                        console.log(err)
+                    }
+                })
+            });
             //储存成功后将路径重定向至详情页
             res.redirect('/movie/' + movie._id);
         })
