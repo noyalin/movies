@@ -1,11 +1,11 @@
 .container
     .row
-        .page-header.clearfix
+        .page-header
             h1= title
             .col-md-4
                 small 重度电影迷
             .col-md-8
-                form(method='GET',action='results')
+                form(method='GET',action='http://localhost:3000/results')
                     .input-group.col-sm-4.pull-right
                         input.form-control(type='text',name='q')
                         span.input-group-btn

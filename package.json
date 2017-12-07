@@ -16,6 +16,7 @@
     "moment": "^2.19.2",
     "mongoose": "^4.13.3",
     "morgan": "^1.9.0",
+    "serve-static": "^1.13.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
