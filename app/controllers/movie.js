@@ -10,13 +10,14 @@ var path = require('path');
 exports.detail = function (req, res) {
     var id = req.params.id;
 
-    //pv每次+1
+    //记录访问次数：pv每次+1
     Movie.update({_id:id},{$inc:{pv:1}},function (err) {
         if (err) {
             console.log(err);
         }
 
     });
+
     Movie.findById(id, function (err, movie) {
         Comment
             .find({movie: id})

@@ -1,6 +1,6 @@
 .container
     .row
-        .page-header
+        .page-header.clearfix
             h1= title
             .col-md-4
                 small 重度电影迷
@@ -41,7 +41,7 @@
                         button.btn.btn-default(type="button",data-dismiss="modal") 关闭
                         button.btn.btn-default(type="submit") 提交
 #signinModal.modal.fade
-    .modal-dialog
+    .modal-dialog.vetically-zdy
         .modal-content
             form(method="post",action="/user/signin")
                 .modal-header 登陆

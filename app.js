@@ -46,11 +46,11 @@ app.use(session({
     secret:'movie',//一个String类型的字符串，作为服务器端生成session的签名。
     store:new MongoStore({//session储存在mongo中，通过实例化一个connect-mongo进行连接。
         url:dburl,
-        collection:'sessions'
+        collection:'sessions',
+        ttl: 1 * 24 * 60 * 60, // = 1 days. Default:14
     }),
-    // resave: false,////如果没有发生任何修改不储存session。
-    // saveUninitialized: false,//在存储一些新数据之前，不创建session
-    // cookie: { secure: true }
+    resave: false,////如果没有发生任何修改不储存session。
+    saveUninitialized: false,//在存储一些新数据之前，不创建session
 }));
 
 //开发环境下：控制台打印log

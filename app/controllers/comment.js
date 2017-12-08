@@ -2,7 +2,7 @@ var Comment = require('../models/comment');
 
 
 //comment从后台录入页post过来的数据
-exports.save = function (req, res) {
+exports.save = function (req, res,next) {
     var _comment= req.body.comment;
     var movieId=_comment.movie;
 
@@ -21,6 +21,7 @@ exports.save = function (req, res) {
                 if (err) {
                     console.log(err);
                 }
+
                 //储存成功后将路径重定向至详情页
                 res.redirect('/movie/' + movieId);
             })
@@ -32,6 +33,7 @@ exports.save = function (req, res) {
             if (err) {
                 console.log(err);
             }
+            console.log(comment);
             //储存成功后将路径重定向至详情页
             res.redirect('/movie/' + movieId);
         })

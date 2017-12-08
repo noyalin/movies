@@ -16,6 +16,7 @@ $(function () {
                 value:toId
             }).appendTo('#commentForm');
         }
+
         if($('#commentId').length>0){
             $('#commentId').val(commentId);
         }else{
@@ -28,6 +29,20 @@ $(function () {
             }).appendTo('#commentForm');
         }
 
-
     })
+    //
+    // $('#comments button').click(function (e) {
+    //     alert("1")
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/user/comment',
+    //         error:function (err) {
+    //             alert("");
+    //         },
+    //         success:function (data) {
+    //             alert("success")
+    //             console.log(data);
+    //         }
+    //     });
+    // })
 });
